@@ -14,7 +14,7 @@
         ></ion-searchbar>
 
         <ion-list >
-          <ion-item v-for="(result, index) in r.results" :key="index">
+          <ion-item button :detail="true" v-for="(result, index) in r.results" :key="index" :href="`/detail/${result._id}`">
             <ion-label>
               <h3>{{ `${result.city} ${result.provinceCode}` }}</h3>
               <p>{{ `${result.postalCode}, ${result.region}` }}</p>
@@ -45,6 +45,7 @@ import {getCities} from "../api/api"
 /* INTERFACES */
 /*********************************************************/
 interface CITY {
+  _id: string,
   city: string,
   postalCode: string,
   region: string,
