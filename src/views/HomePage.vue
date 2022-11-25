@@ -14,7 +14,7 @@
         ></ion-searchbar>
 
         <ion-list >
-          <ion-item button :detail="true" v-for="(result, index) in r.results" :key="index" :href="`/detail/${result._id}`">
+          <ion-item button :detail="true" v-for="(result, index) in r.results" :key="index" @click="handleClick(result._id)">
             <ion-label>
               <h3>{{ `${result.city} ${result.provinceCode}` }}</h3>
               <p>{{ `${result.postalCode}, ${result.region}` }}</p>
@@ -62,6 +62,7 @@ import {
 } from "@ionic/vue";
 import {reactive } from "vue";
 import {getCities} from "../api/api"
+import { useRouter } from 'vue-router'
 
 /*********************************************************/
 /* INTERFACES */
@@ -88,12 +89,20 @@ let r = reactive<REACTIVE_DATA>({
   query: ""
 });
 
+const router = useRouter()
+
+
 async function handleChange(evt:any){
   console.log(evt.target.value)
   const response = await getCities(evt.target.value);
   console.log(response)
   r.results = response.data.data
   console.log(r.results)
+}
+
+async function handleClick(_id:any){
+ console.log(_id)
+ router.push(`/detail/${_id}`)
 }
 
 </script>
