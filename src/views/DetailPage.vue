@@ -11,27 +11,23 @@
           v-if="r.progress"
         ></ion-progress-bar>
       </ion-toolbar>
+      <ion-card v-if="!r.progress">
+        <ion-card-header>
+          <ion-card-title>{{ `${r.city} ${r.provinceCode}` }}</ion-card-title>
+          <ion-card-subtitle>
+            {{ `${r.postalCode}, ${r.region}` }}
+          </ion-card-subtitle>
+        </ion-card-header>
+
+        <ion-card-content>
+          <h2>{{ `Latitude: ${r.latitude}` }}</h2>
+          <h2>{{ `Longitude: ${r.longitude}` }}</h2>
+        </ion-card-content>
+      </ion-card>
     </ion-header>
 
     <ion-card id="map"></ion-card>
 
-    <ion-footer>
-      <ion-toolbar>
-        <ion-card v-if="!r.progress">
-          <ion-card-header>
-            <ion-card-title>{{ `${r.city} ${r.provinceCode}` }}</ion-card-title>
-            <ion-card-subtitle>
-              {{ `${r.postalCode}, ${r.region}` }}
-            </ion-card-subtitle>
-          </ion-card-header>
-
-          <ion-card-content>
-            <h2>{{ `Latitude: ${r.latitude}` }}</h2>
-            <h2>{{ `Longitude: ${r.longitude}` }}</h2>
-          </ion-card-content>
-        </ion-card>
-      </ion-toolbar>
-    </ion-footer>
   </ion-page>
 </template>
 
@@ -49,7 +45,6 @@ import {
   IonButtons,
   IonBackButton,
   IonCard,
-  IonFooter,
 } from "@ionic/vue";
 import { onMounted, defineProps, reactive } from "vue";
 import { getCity } from "../api/api";
