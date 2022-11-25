@@ -102,7 +102,7 @@ async function handleChange(evt:any){
 
 async function handleClick(_id:any){
  console.log(_id)
- router.push(`/detail/${_id}`)
+ router.push(`/home/${_id}`)
 }
 
 </script>

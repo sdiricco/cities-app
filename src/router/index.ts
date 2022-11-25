@@ -12,7 +12,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/HomePage.vue'),
   },
   {
-    path: '/detail/:_id',
+    path: '/home/:_id',
     name: 'Detail',
     component: () => import('@/views/DetailPage.vue'),
     props: true
