@@ -2,14 +2,14 @@
   <ion-page>
     <ion-header :translucent="true">
       <ion-toolbar>
-        <ion-title>App</ion-title>
+        <ion-title>City finder</ion-title>
       </ion-toolbar>
     </ion-header>
 
     <ion-content :fullscreen="true">
       <div>
         <ion-searchbar
-          :debounce="500"
+          :debounce="100"
           @ion-change="handleChange"
         ></ion-searchbar>
 
@@ -23,6 +23,23 @@
         </ion-list>
       </div>
     </ion-content>
+    <ion-footer>
+      <ion-toolbar>
+        <ion-card v-if="r.results.length">
+          <ion-card-header>
+            <ion-card-title>{{ `${r.results[0].city} ${r.results[0].provinceCode}` }}</ion-card-title>
+            <ion-card-subtitle>
+              {{ `${r.results[0].postalCode}, ${r.results[0].region}` }}
+            </ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content>
+            <h2>{{ `Latitude: ${r.results[0].latitude}` }}</h2>
+            <h2>{{ `Longitude: ${r.results[0].longitude}` }}</h2>
+          </ion-card-content>
+        </ion-card>
+      </ion-toolbar>
+    </ion-footer>
   </ion-page>
 </template>
 
@@ -37,6 +54,11 @@ import {
   IonLabel,
   IonSearchbar,
   IonList,
+  IonFooter,
+  IonCard,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardTitle
 } from "@ionic/vue";
 import {reactive } from "vue";
 import {getCities} from "../api/api"
@@ -50,7 +72,9 @@ interface CITY {
   postalCode: string,
   region: string,
   countryCode: string,
-  provinceCode: string
+  provinceCode: string,
+  latitude: string,
+  longitude: string
 }
 interface REACTIVE_DATA {
   results: Array<CITY>
