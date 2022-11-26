@@ -94,9 +94,7 @@ async function handleClick(_id: any) {
 
 async function ionInfinite(ev: any) {
   r.page += 1;
-  r.progress = true;
   const response = await getCities(r.city, r.page);
-  r.progress = false;
   r.results = [...r.results, ...response.data.data];
   ev.target.complete();
 }
