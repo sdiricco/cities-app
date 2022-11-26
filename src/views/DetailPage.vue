@@ -5,7 +5,6 @@
         <ion-buttons slot="start">
           <ion-back-button default-href="/home"></ion-back-button>
         </ion-buttons>
-        <ion-title>City finder</ion-title>
         <ion-progress-bar
           type="indeterminate"
           v-if="r.progress"
@@ -35,7 +34,6 @@
 import {
   IonHeader,
   IonPage,
-  IonTitle,
   IonToolbar,
   IonCardContent,
   IonCardHeader,
@@ -97,7 +95,7 @@ onMounted(async () => {
 
   r.progress = false;
 
-  var map = L.map("map").setView([r.latitude, r.longitude], 13);
+  var map = L.map("map").setView([Number(r.latitude), Number(r.longitude)], 13);
   console.log(map);
 
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {

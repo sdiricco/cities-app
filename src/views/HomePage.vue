@@ -2,9 +2,14 @@
   <ion-page>
     <ion-header :translucent="true">
       <ion-toolbar>
-        <ion-title>City finder</ion-title>
+        <ion-searchbar
+          v-model="r.city"
+        ></ion-searchbar>
       </ion-toolbar>
-      <ion-searchbar :debounce="100" @ion-change="handleChange"></ion-searchbar>
+      <ion-progress-bar
+        type="indeterminate"
+        v-if="r.progress"
+      ></ion-progress-bar>
     </ion-header>
 
     <ion-content :fullscreen="true">
@@ -22,6 +27,10 @@
           </ion-label>
         </ion-item>
       </ion-list>
+
+      <ion-infinite-scroll @ionInfinite="ionInfinite">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
     </ion-content>
   </ion-page>
 </template>
@@ -31,16 +40,19 @@ import {
   IonContent,
   IonHeader,
   IonPage,
-  IonTitle,
   IonToolbar,
   IonItem,
   IonLabel,
   IonSearchbar,
-  IonList
+  IonList,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
+  IonProgressBar,
 } from "@ionic/vue";
-import { reactive, onMounted } from "vue";
+import { reactive, onMounted, computed } from "vue";
 import { getCities } from "../api/api";
 import { useRouter } from "vue-router";
+import { watchDebounced } from '@vueuse/core'
 
 /*********************************************************/
 /* INTERFACES */
@@ -56,34 +68,65 @@ interface CITY {
   longitude: string;
 }
 interface REACTIVE_DATA {
+  page: number;
+  city: string;
   results: Array<CITY>;
   query: string;
+  progress: boolean;
 }
 /*********************************************************/
 /* REACTIVE DATA */
 /*********************************************************/
 let r = reactive<REACTIVE_DATA>({
+  page: 1,
+  city: "",
   results: [],
   query: "",
+  progress: false,
 });
 
 const router = useRouter();
-
-async function handleChange(evt: any) {
-  console.log(evt.target.value);
-  const response = await getCities(evt.target.value);
-  r.results = response.data.data;
-}
 
 async function handleClick(_id: any) {
   console.log(_id);
   router.push(`/home/${_id}`);
 }
 
-onMounted(async()=>{
-  const response = await getCities("");
-  r.results = response.data.data;
+async function ionInfinite(ev: any) {
+  r.page += 1;
+  r.progress = true;
+  const response = await getCities(r.city, r.page);
+  r.progress = false;
+  r.results = [...r.results, ...response.data.data];
+  ev.target.complete();
+}
+
+/*********************************************************/
+/* COMPUTED */
+/*********************************************************/
+const city = computed(()=> {
+  return r.city
 })
+
+watchDebounced(city, async() => {
+  r.page = 1;
+  r.progress = true;
+  const response = await getCities(r.city, r.page);
+  r.progress = false;
+  r.results = response.data.data;
+}, { debounce: 100, maxWait: 5000 })
+
+onMounted(async () => {
+  r.page = 1;
+  r.progress = true;
+  const response = await getCities("", r.page);
+  r.progress = false;
+  r.results = response.data.data;
+});
 </script>
 
-<style scoped></style>
+<style scoped>
+.oy {
+  overflow-y: auto;
+}
+</style>
