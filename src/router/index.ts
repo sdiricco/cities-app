@@ -15,7 +15,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/home/:_id',
     name: 'Detail',
     component: () => import('@/views/DetailPage.vue'),
-    props: true
+    props: true,
   }
 ]
 

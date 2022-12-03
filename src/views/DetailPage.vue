@@ -7,7 +7,7 @@
         </ion-buttons>
         <ion-progress-bar
           type="indeterminate"
-          v-if="r.progress"
+          v-if="store.httpRequestOnGoing"
         ></ion-progress-bar>
       </ion-toolbar>
       <ion-card v-if="!r.progress">
@@ -47,6 +47,9 @@ import {
 import { onMounted, defineProps, reactive } from "vue";
 import { getCity } from "../api/api";
 import * as L from "leaflet";
+import { useStore } from "@/store/counter";
+
+const store = useStore();
 
 interface REACTIVE_DATA {
   _id: string;
@@ -81,7 +84,6 @@ let r = reactive<REACTIVE_DATA>({
 const props = defineProps(["_id"]);
 
 onMounted(async () => {
-  r.progress = true;
 
   const response = await getCity(props._id);
   r.city = response.data.data.city;
@@ -93,7 +95,6 @@ onMounted(async () => {
   r.longitude = response.data.data.longitude;
   r.regionCode = response.data.data.regionCode;
 
-  r.progress = false;
 
   var map = L.map("map").setView([Number(r.latitude), Number(r.longitude)], 13);
   console.log(map);

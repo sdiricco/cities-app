@@ -1,7 +1,9 @@
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router';
 import './registerServiceWorker';
+import * as interceptors from "./services/interceptors";
 
 /*********************************************
  * IONIC
@@ -43,11 +45,18 @@ import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
 /* add icons to the library */
 library.add(faUserSecret)
 
+interceptors.activate();
+
+const pinia = createPinia()
+
 const app = createApp(App)
   .component('font-awesome-icon', FontAwesomeIcon)
+  .use(pinia)
   .use(IonicVue)
   .use(router);
   
 router.isReady().then(() => {
   app.mount('#app');
+
 });
+

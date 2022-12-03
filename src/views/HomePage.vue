@@ -2,14 +2,9 @@
   <ion-page>
     <ion-header :translucent="true">
       <ion-toolbar>
-        <ion-searchbar
-          v-model="r.city"
-        ></ion-searchbar>
+        <ion-searchbar v-model="r.city"></ion-searchbar>
       </ion-toolbar>
-      <ion-progress-bar
-        type="indeterminate"
-        v-if="r.progress"
-      ></ion-progress-bar>
+      <ion-progress-bar type="indeterminate" v-if="store.httpRequestOnGoing"></ion-progress-bar>
     </ion-header>
 
     <ion-content :fullscreen="true">
@@ -52,7 +47,11 @@ import {
 import { reactive, onMounted, computed } from "vue";
 import { getCities } from "../api/api";
 import { useRouter } from "vue-router";
-import { watchDebounced } from '@vueuse/core'
+import { watchDebounced } from "@vueuse/core";
+import { useStore } from "@/store/counter";
+
+const store = useStore();
+
 
 /*********************************************************/
 /* INTERFACES */
@@ -102,29 +101,25 @@ async function ionInfinite(ev: any) {
 /*********************************************************/
 /* COMPUTED */
 /*********************************************************/
-const city = computed(()=> {
-  return r.city
-})
+const city = computed(() => {
+  return r.city;
+});
 
-watchDebounced(city, async() => {
-  r.page = 1;
-  r.progress = true;
-  const response = await getCities(r.city, r.page);
-  r.progress = false;
-  r.results = response.data.data;
-}, { debounce: 100, maxWait: 5000 })
+watchDebounced(
+  city,
+  async () => {
+    r.page = 1;
+    const response = await getCities(r.city, r.page);
+    r.results = response.data.data;
+  },
+  { debounce: 100, maxWait: 5000 }
+);
 
 onMounted(async () => {
   r.page = 1;
-  r.progress = true;
   const response = await getCities("", r.page);
-  r.progress = false;
   r.results = response.data.data;
 });
 </script>
 
-<style scoped>
-.oy {
-  overflow-y: auto;
-}
-</style>
+<style scoped></style>
