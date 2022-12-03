@@ -5,5 +5,6 @@ export const useStore = defineStore({
   state: () => ({
     httpRequestOnGoing: false,
     httpRequestAborted: false,
+    httpRequestRetryCount: 0
   })
 })

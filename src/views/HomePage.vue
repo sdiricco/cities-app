@@ -4,7 +4,10 @@
       <ion-toolbar>
         <ion-searchbar v-model="r.city"></ion-searchbar>
       </ion-toolbar>
-      <ion-progress-bar type="indeterminate" v-if="store.httpRequestOnGoing"></ion-progress-bar>
+      <ion-progress-bar
+        type="indeterminate"
+        v-if="store.httpRequestOnGoing"
+      ></ion-progress-bar>
     </ion-header>
 
     <ion-content :fullscreen="true">
@@ -22,6 +25,13 @@
           </ion-label>
         </ion-item>
       </ion-list>
+
+      <ion-loading
+        :is-open="store.httpRequestRetryCount > 0"
+        :message="retryMessage"
+        :key="key"
+      >
+      </ion-loading>
 
       <ion-infinite-scroll @ionInfinite="ionInfinite">
         <ion-infinite-scroll-content></ion-infinite-scroll-content>
@@ -43,15 +53,15 @@ import {
   IonInfiniteScroll,
   IonInfiniteScrollContent,
   IonProgressBar,
+  IonLoading,
 } from "@ionic/vue";
 import { reactive, onMounted, computed } from "vue";
 import { getCities } from "../api/api";
 import { useRouter } from "vue-router";
 import { watchDebounced } from "@vueuse/core";
 import { useStore } from "@/store/counter";
-
+import { v4 as uuidv4 } from 'uuid';
 const store = useStore();
-
 
 /*********************************************************/
 /* INTERFACES */
@@ -104,6 +114,15 @@ async function ionInfinite(ev: any) {
 const city = computed(() => {
   return r.city;
 });
+
+const retryMessage = computed(() => {
+  console.log(store.httpRequestRetryCount)
+  return `Sto cercando di connettermi al server ma non risonde. Riprovo.. ${store.httpRequestRetryCount}/5`
+})
+
+const key = computed(() =>{
+  return uuidv4() + store.httpRequestRetryCount
+})
 
 watchDebounced(
   city,

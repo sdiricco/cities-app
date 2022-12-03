@@ -28,10 +28,12 @@
     "@ionic/vue-router": "^6.0.0",
     "@vueuse/core": "^9.6.0",
     "axios": "^1.2.0",
+    "axios-retry": "^3.3.1",
     "core-js": "^3.6.5",
     "leaflet": "^1.9.3",
     "pinia": "^2.0.27",
     "register-service-worker": "^1.7.2",
+    "uuid": "^9.0.0",
     "vue": "^3.2.21",
     "vue-router": "^4.0.12"
   },
