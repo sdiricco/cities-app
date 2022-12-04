@@ -32,7 +32,7 @@ export function activate() {
 
       // Do something before request is sent
       console.log("intercept request, config", config);
-      return { ...config, ...{ timeout: 10000 } };
+      return config;
     },
     function (error) {
       // Do something with request error

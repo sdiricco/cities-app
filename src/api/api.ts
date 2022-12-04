@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const ENDPOINT = "https://cities-api.onrender.com/api/v1/";
+const ENDPOINT = "https://sdiricco-cities-api.herokuapp.com/api/v1/";
 
 
 
