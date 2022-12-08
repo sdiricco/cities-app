@@ -1,17 +1,16 @@
 <template>
   <ion-page>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-searchbar v-model="r.city"></ion-searchbar>
+    <ion-header> </ion-header>
+
+    <ion-content :fullscreen="true">
+      <ion-toolbar class="search-bar">
+        <ion-searchbar v-model="r.city" animated></ion-searchbar>
       </ion-toolbar>
       <ion-progress-bar
         type="indeterminate"
         v-if="store.httpRequestOnGoing"
       ></ion-progress-bar>
-    </ion-header>
-
-    <ion-content :fullscreen="true">
-      <ion-list>
+      <ion-list class="mt32">
         <ion-item
           button
           :detail="true"
@@ -32,11 +31,12 @@
         :key="key"
       >
       </ion-loading>
-
-      <ion-infinite-scroll @ionInfinite="ionInfinite">
-        <ion-infinite-scroll-content></ion-infinite-scroll-content>
-      </ion-infinite-scroll>
     </ion-content>
+    <ion-footer>
+      <ion-toolbar>
+        <ion-title>App version: {{ store.appVersion }}</ion-title>
+      </ion-toolbar>
+    </ion-footer>
   </ion-page>
 </template>
 
@@ -54,13 +54,18 @@ import {
   IonInfiniteScrollContent,
   IonProgressBar,
   IonLoading,
+  IonFooter,
+  IonTitle,
+  IonFab,
+  IonFabButton,
+  IonIcon,
 } from "@ionic/vue";
 import { reactive, onMounted, computed } from "vue";
 import { getCities } from "../api/api";
 import { useRouter } from "vue-router";
 import { watchDebounced } from "@vueuse/core";
 import { useStore } from "@/store/counter";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 const store = useStore();
 
 /*********************************************************/
@@ -116,13 +121,13 @@ const city = computed(() => {
 });
 
 const retryMessage = computed(() => {
-  console.log(store.httpRequestRetryCount)
-  return `Sto cercando di connettermi al server ma non risonde. Riprovo.. ${store.httpRequestRetryCount}/5`
-})
+  console.log(store.httpRequestRetryCount);
+  return `Sto cercando di connettermi al server ma non risonde. Riprovo.. ${store.httpRequestRetryCount}/5`;
+});
 
-const key = computed(() =>{
-  return uuidv4() + store.httpRequestRetryCount
-})
+const key = computed(() => {
+  return uuidv4() + store.httpRequestRetryCount;
+});
 
 watchDebounced(
   city,
@@ -141,4 +146,8 @@ onMounted(async () => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.search-bar {
+  padding: 8px;
+}
+</style>

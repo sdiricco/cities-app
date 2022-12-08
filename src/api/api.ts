@@ -7,7 +7,7 @@ const ENDPOINT = "https://sdiricco-cities-api.herokuapp.com/api/v1/";
 
 export async function getCities(name: string, page: number) {
   return await axios.get(ENDPOINT + "cities", {
-    params: { city: name, limit: 15, page },
+    params: { city: name, limit: 10, page },
   });
 }
 

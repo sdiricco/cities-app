@@ -5,6 +5,7 @@ export const useStore = defineStore({
   state: () => ({
     httpRequestOnGoing: false,
     httpRequestAborted: false,
-    httpRequestRetryCount: 0
+    httpRequestRetryCount: 0,
+    appVersion: '0.0.1'
   })
 })

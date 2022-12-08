@@ -5,10 +5,6 @@
         <ion-buttons slot="start">
           <ion-back-button default-href="/home"></ion-back-button>
         </ion-buttons>
-        <ion-progress-bar
-          type="indeterminate"
-          v-if="store.httpRequestOnGoing"
-        ></ion-progress-bar>
       </ion-toolbar>
       <ion-card v-if="!r.progress">
         <ion-card-header>
@@ -26,6 +22,11 @@
     </ion-header>
 
     <ion-card id="map"></ion-card>
+    <ion-footer>
+      <ion-toolbar>
+        <ion-title>App version: {{ store.appVersion }}</ion-title>
+      </ion-toolbar>
+    </ion-footer>
 
   </ion-page>
 </template>
@@ -43,6 +44,8 @@ import {
   IonButtons,
   IonBackButton,
   IonCard,
+  IonFooter,
+  IonTitle
 } from "@ionic/vue";
 import { onMounted, defineProps, reactive } from "vue";
 import { getCity } from "../api/api";

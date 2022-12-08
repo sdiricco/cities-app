@@ -10,7 +10,10 @@
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
     "postinstall": "yarn build",
-    "start": "vue-cli-service serve"
+    "start": "vue-cli-service serve",
+    "native-build": "ionic build && npx cap copy",
+    "native-open-android": "npx cap open android",
+    "native-dev": "yarn native-build && yarn native-open-android"
   },
   "dependencies": {
     "@capacitor/android": "4.0.1",
