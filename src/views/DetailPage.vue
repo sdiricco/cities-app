@@ -22,11 +22,6 @@
     </ion-header>
 
     <ion-card id="map"></ion-card>
-    <ion-footer>
-      <ion-toolbar>
-        <ion-title>App version: {{ store.appVersion }}</ion-title>
-      </ion-toolbar>
-    </ion-footer>
 
   </ion-page>
 </template>
@@ -112,5 +107,10 @@ onMounted(async () => {
 <style scoped>
 #map {
   height: 100%;
+}
+
+ion-card{
+  margin: 0px 0px 0px 0px;
+  border-radius: 0px;
 }
 </style>

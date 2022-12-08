@@ -1,15 +1,28 @@
 <template>
   <ion-page>
-    <ion-header> </ion-header>
+    <ion-header>
+      <ion-toolbar>
+        <ion-item >
+          <ion-label>{{ store.appVersion }}</ion-label>
+          <div class="d-flex">
+            <ion-toggle
+              :checked="store.isDark"
+              @ionChange="store.toggleTheme"
+              name="Theme"
+            ></ion-toggle>
+            <ion-icon :icon="moon"></ion-icon>
+          </div>
+        </ion-item>
 
-    <ion-content :fullscreen="true">
-      <ion-toolbar class="search-bar">
-        <ion-searchbar v-model="r.city" animated></ion-searchbar>
+        <ion-searchbar v-model="r.city" animated :style="{padding: '16px'}"></ion-searchbar>
       </ion-toolbar>
       <ion-progress-bar
         type="indeterminate"
         v-if="store.httpRequestOnGoing"
       ></ion-progress-bar>
+    </ion-header>
+
+    <ion-content :fullscreen="true">
       <ion-list class="mt32">
         <ion-item
           button
@@ -32,25 +45,6 @@
       >
       </ion-loading>
     </ion-content>
-    <ion-footer>
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-toggle
-            :checked="store.isDark"
-            @ionChange="store.toggleTheme"
-            name="Theme"
-          ></ion-toggle>
-          <ion-icon
-            slot="start"
-            :icon="moon"
-            class="component-icon component-icon-dark"
-          ></ion-icon>
-        </ion-buttons>
-        <ion-buttons slot="end">
-          <ion-title>v: {{ store.appVersion }}</ion-title>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-footer>
   </ion-page>
 </template>
 
@@ -154,7 +148,12 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.search-bar {
-  padding: 8px;
+
+.d-flex{
+  display: flex;
+  align-items: center;
+}
+ion-icon {
+  font-size: 24px;
 }
 </style>
