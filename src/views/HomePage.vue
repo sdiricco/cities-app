@@ -110,6 +110,7 @@ const router = useRouter();
 
 async function handleClick(_id: any) {
   console.log(_id);
+  store.savePreferences({id: _id});
   router.push(`/home/${_id}`);
 }
 
@@ -134,6 +135,8 @@ async function handleChange(event:any) {
 }
 
 onMounted(async () => {
+  await store.fetchPreferences();
+  console.log(store.preferences)
   const response = await getCities("", 1);
   r.results = response.data.data;
 });
