@@ -14,14 +14,14 @@
           </div>
         </div>
         <ion-searchbar
-          :debounce="500"
+          :debounce="200"
           :style="{ padding: '16px' }"
           @ionChange="handleChange($event)"
         ></ion-searchbar>
       </ion-toolbar>
       <ion-progress-bar
         type="indeterminate"
-        v-if="store.httpRequestOnGoing"
+        v-if="false"
       ></ion-progress-bar>
     </ion-header>
 
