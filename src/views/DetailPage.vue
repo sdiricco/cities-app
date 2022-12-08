@@ -1,6 +1,6 @@
 <template>
   <ion-page>
-    <ion-header class="mt32">
+    <ion-header>
       <ion-toolbar>
         <ion-buttons slot="start">
           <ion-back-button default-href="/home"></ion-back-button>
@@ -101,6 +101,9 @@ onMounted(async () => {
 
 <style scoped>
 
+.mt32{
+  margin-top: 32px;
+}
 
 #map {
   height: 100%;

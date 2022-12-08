@@ -1,6 +1,6 @@
 <template>
   <ion-page>
-    <ion-header class="mt32">
+    <ion-header>
       <ion-toolbar>
         <div class="title">
           <ion-label>{{ store.appVersion }}</ion-label>
@@ -26,7 +26,7 @@
     </ion-header>
 
     <ion-content :fullscreen="true">
-      <ion-list class="mt32">
+      <ion-list>
         <ion-item
           button
           :detail="true"
@@ -109,8 +109,6 @@ let r = reactive<REACTIVE_DATA>({
 const router = useRouter();
 
 async function handleClick(_id: any) {
-  console.log(_id);
-  store.savePreferences({id: _id});
   router.push(`/home/${_id}`);
 }
 
@@ -135,14 +133,16 @@ async function handleChange(event:any) {
 }
 
 onMounted(async () => {
-  await store.fetchPreferences();
-  console.log(store.preferences)
   const response = await getCities("", 1);
   r.results = response.data.data;
 });
 </script>
 
 <style scoped>
+
+.mt32{
+  margin-top: 32px;
+}
 .d-flex {
   display: flex;
   align-items: center;

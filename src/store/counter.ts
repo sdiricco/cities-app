@@ -1,7 +1,8 @@
 import { defineStore } from "pinia";
 import { Preferences } from "@capacitor/preferences";
+
 interface IPreferences {
-  id: string;
+  isDark: boolean;
 }
 
 export const useStore = defineStore({
@@ -13,14 +14,14 @@ export const useStore = defineStore({
     appVersion: "0.0.3",
     isDark: false,
     preferences: {
-      id: "",
+      isDark: false,
     },
   }),
   actions: {
     async toggleTheme() {
       this.isDark = !this.isDark;
       document.body.classList.toggle("dark", this.isDark);
-
+      await this.savePreferences({ isDark: this.isDark });
     },
     async fetchPreferences() {
       const result = await Preferences.get({ key: "user" });
