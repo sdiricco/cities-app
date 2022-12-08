@@ -59,10 +59,7 @@ import {
   IonList,
   IonProgressBar,
   IonLoading,
-  IonFooter,
-  IonTitle,
   IonToggle,
-  IonButtons,
   IonIcon,
 } from "@ionic/vue";
 

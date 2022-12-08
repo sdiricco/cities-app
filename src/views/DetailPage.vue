@@ -38,15 +38,11 @@ import {
   IonButtons,
   IonBackButton,
   IonCard,
-  IonFooter,
-  IonTitle
 } from "@ionic/vue";
 import { onMounted, defineProps, reactive } from "vue";
 import { getCity } from "../api/api";
 import * as L from "leaflet";
-import { useStore } from "@/store/counter";
 
-const store = useStore();
 
 interface REACTIVE_DATA {
   _id: string;
