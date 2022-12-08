@@ -40,7 +40,6 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonCardSubtitle,
-  IonProgressBar,
   IonButtons,
   IonBackButton,
   IonCard,

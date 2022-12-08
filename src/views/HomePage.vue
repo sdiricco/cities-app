@@ -34,7 +34,21 @@
     </ion-content>
     <ion-footer>
       <ion-toolbar>
-        <ion-title>App version: {{ store.appVersion }}</ion-title>
+        <ion-buttons slot="start">
+          <ion-toggle
+            :checked="store.isDark"
+            @ionChange="store.toggleTheme"
+            name="Theme"
+          ></ion-toggle>
+          <ion-icon
+            slot="start"
+            :icon="moon"
+            class="component-icon component-icon-dark"
+          ></ion-icon>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-title>v: {{ store.appVersion }}</ion-title>
+        </ion-buttons>
       </ion-toolbar>
     </ion-footer>
   </ion-page>
@@ -50,16 +64,16 @@ import {
   IonLabel,
   IonSearchbar,
   IonList,
-  IonInfiniteScroll,
-  IonInfiniteScrollContent,
   IonProgressBar,
   IonLoading,
   IonFooter,
   IonTitle,
-  IonFab,
-  IonFabButton,
+  IonToggle,
+  IonButtons,
   IonIcon,
 } from "@ionic/vue";
+
+import { moon } from "ionicons/icons";
 import { reactive, onMounted, computed } from "vue";
 import { getCities } from "../api/api";
 import { useRouter } from "vue-router";
@@ -104,13 +118,6 @@ const router = useRouter();
 async function handleClick(_id: any) {
   console.log(_id);
   router.push(`/home/${_id}`);
-}
-
-async function ionInfinite(ev: any) {
-  r.page += 1;
-  const response = await getCities(r.city, r.page);
-  r.results = [...r.results, ...response.data.data];
-  ev.target.complete();
 }
 
 /*********************************************************/
