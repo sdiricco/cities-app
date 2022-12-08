@@ -2,7 +2,7 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-item >
+        <div class="title">
           <ion-label>{{ store.appVersion }}</ion-label>
           <div class="d-flex">
             <ion-toggle
@@ -12,9 +12,8 @@
             ></ion-toggle>
             <ion-icon :icon="moon"></ion-icon>
           </div>
-        </ion-item>
-
-        <ion-searchbar v-model="r.city" animated :style="{padding: '16px'}"></ion-searchbar>
+        </div>
+        <ion-searchbar v-model="r.city" :style="{padding: '16px'}"></ion-searchbar>
       </ion-toolbar>
       <ion-progress-bar
         type="indeterminate"
@@ -155,5 +154,12 @@ onMounted(async () => {
 }
 ion-icon {
   font-size: 24px;
+}
+
+.title{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 16px 0px 16px;
 }
 </style>
