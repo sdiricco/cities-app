@@ -1,36 +1,36 @@
-import { defineStore } from 'pinia'
-import { Preferences } from '@capacitor/preferences';
-
+import { defineStore } from "pinia";
+import { Preferences } from "@capacitor/preferences";
 interface IPreferences {
-  id: string
-} 
+  id: string;
+}
 
 export const useStore = defineStore({
-  id: 'store',
+  id: "store",
   state: () => ({
     httpRequestOnGoing: false,
     httpRequestAborted: false,
     httpRequestRetryCount: 0,
-    appVersion: '0.0.2',
+    appVersion: "0.0.3",
     isDark: false,
-    preferences:{
-      id: ''
-    }
+    preferences: {
+      id: "",
+    },
   }),
   actions: {
-    toggleTheme() {
-      document.body.classList.toggle('dark');
+    async toggleTheme() {
+      this.isDark = !this.isDark;
+      document.body.classList.toggle("dark", this.isDark);
+
     },
-    async fetchPreferences(){
-      const result = await Preferences.get({key: 'user'})
-      this.preferences = JSON.parse(String(result.value))
+    async fetchPreferences() {
+      const result = await Preferences.get({ key: "user" });
+      this.preferences = JSON.parse(String(result.value));
     },
-    async savePreferences(preferences:IPreferences){
+    async savePreferences(preferences: IPreferences) {
       await Preferences.set({
-        key: 'user',
-        value: JSON.stringify(preferences)
+        key: "user",
+        value: JSON.stringify(preferences),
       });
     }
   },
-  
-})
+});

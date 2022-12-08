@@ -1,6 +1,6 @@
 <template>
   <ion-page>
-    <ion-header>
+    <ion-header class="mt32">
       <ion-toolbar>
         <div class="title">
           <ion-label>{{ store.appVersion }}</ion-label>

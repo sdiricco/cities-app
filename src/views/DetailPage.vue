@@ -1,6 +1,6 @@
 <template>
   <ion-page>
-    <ion-header :translucent="true">
+    <ion-header class="mt32">
       <ion-toolbar>
         <ion-buttons slot="start">
           <ion-back-button default-href="/home"></ion-back-button>
@@ -42,7 +42,6 @@ import {
 import { onMounted, defineProps, reactive } from "vue";
 import { getCity } from "../api/api";
 import * as L from "leaflet";
-
 
 interface REACTIVE_DATA {
   _id: string;
@@ -101,6 +100,8 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+
+
 #map {
   height: 100%;
 }

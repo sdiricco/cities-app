@@ -1,6 +1,6 @@
 {
   "name": "cities-app",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "description": "An Ionic project",
   "scripts": {
@@ -11,7 +11,7 @@
     "lint": "vue-cli-service lint",
     "postinstall": "yarn build",
     "start": "vue-cli-service serve",
-    "native-build": "ionic build && npx cap copy",
+    "native-build": "npx rimraf dist && ionic build && npx cap sync && npx cap copy",
     "native-open-android": "npx cap open android",
     "native-dev": "yarn native-build && yarn native-open-android"
   },
