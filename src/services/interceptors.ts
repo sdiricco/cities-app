@@ -31,7 +31,6 @@ export function activate() {
       store.httpRequestOnGoing = true;
 
       // Do something before request is sent
-      console.log("intercept request, config", config);
       return config;
     },
     function (error) {
@@ -49,7 +48,6 @@ export function activate() {
 
 
       // Do something with response data
-      console.log("intercept response:", response);
       return response;
     },
 
@@ -63,7 +61,6 @@ export function activate() {
       if (error.code && error.code.lenght) {
         store.httpRequestAborted = true;
       }
-      console.log("intercept error", error.code);
       return Promise.reject(error);
     }
   );

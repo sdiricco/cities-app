@@ -13,7 +13,11 @@
             <ion-icon :icon="moon"></ion-icon>
           </div>
         </div>
-        <ion-searchbar v-model="r.city" :style="{padding: '16px'}"></ion-searchbar>
+        <ion-searchbar
+          :debounce="500"
+          :style="{ padding: '16px' }"
+          @ionChange="handleChange($event)"
+        ></ion-searchbar>
       </ion-toolbar>
       <ion-progress-bar
         type="indeterminate"
@@ -67,7 +71,6 @@ import { moon } from "ionicons/icons";
 import { reactive, onMounted, computed } from "vue";
 import { getCities } from "../api/api";
 import { useRouter } from "vue-router";
-import { watchDebounced } from "@vueuse/core";
 import { useStore } from "@/store/counter";
 import { v4 as uuidv4 } from "uuid";
 const store = useStore();
@@ -86,21 +89,21 @@ interface CITY {
   longitude: string;
 }
 interface REACTIVE_DATA {
-  page: number;
-  city: string;
   results: Array<CITY>;
   query: string;
   progress: boolean;
+  debouncing: boolean;
+  timer: any;
 }
 /*********************************************************/
 /* REACTIVE DATA */
 /*********************************************************/
 let r = reactive<REACTIVE_DATA>({
-  page: 1,
-  city: "",
   results: [],
   query: "",
   progress: false,
+  debouncing: false,
+  timer: null,
 });
 
 const router = useRouter();
@@ -113,9 +116,6 @@ async function handleClick(_id: any) {
 /*********************************************************/
 /* COMPUTED */
 /*********************************************************/
-const city = computed(() => {
-  return r.city;
-});
 
 const retryMessage = computed(() => {
   console.log(store.httpRequestRetryCount);
@@ -126,26 +126,21 @@ const key = computed(() => {
   return uuidv4() + store.httpRequestRetryCount;
 });
 
-watchDebounced(
-  city,
-  async () => {
-    r.page = 1;
-    const response = await getCities(r.city, r.page);
-    r.results = response.data.data;
-  },
-  { debounce: 100, maxWait: 5000 }
-);
+async function handleChange(event:any) {
+  console.log(event.target.value);
+  const v = String(event.target.value);
+  const response = await getCities(v, 1);
+  r.results = response.data.data;
+}
 
 onMounted(async () => {
-  r.page = 1;
-  const response = await getCities("", r.page);
+  const response = await getCities("", 1);
   r.results = response.data.data;
 });
 </script>
 
 <style scoped>
-
-.d-flex{
+.d-flex {
   display: flex;
   align-items: center;
 }
@@ -153,7 +148,7 @@ ion-icon {
   font-size: 24px;
 }
 
-.title{
+.title {
   display: flex;
   align-items: center;
   justify-content: space-between;
