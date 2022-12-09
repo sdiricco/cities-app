@@ -133,6 +133,7 @@ async function handleChange(event:any) {
 }
 
 onMounted(async () => {
+  await store.loadApp()
   const response = await getCities("", 1);
   r.results = response.data.data;
 });

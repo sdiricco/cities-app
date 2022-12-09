@@ -3,6 +3,8 @@ http://ionicframework.com/docs/theming/ */
 
 /** Ionic CSS Variables **/
 :root {
+  --ion-statusbar-color: #ffffff;
+  --ion-statusbar-color-dark: #121212;
   /** primary **/
   --ion-color-primary: #3880ff;
   --ion-color-primary-rgb: 56, 128, 255;
@@ -82,6 +84,8 @@ http://ionicframework.com/docs/theming/ */
  */
 
  body.dark {
+  --ion-statusbar-color: #121212;
+  
   --ion-color-primary: #428cff;
   --ion-color-primary-rgb: 66, 140, 255;
   --ion-color-primary-contrast: #ffffff;

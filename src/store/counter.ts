@@ -1,9 +1,7 @@
 import { defineStore } from "pinia";
 import { Preferences } from "@capacitor/preferences";
+import { setTheme } from "../theme/utility";
 
-interface IPreferences {
-  isDark: boolean;
-}
 
 export const useStore = defineStore({
   id: "store",
@@ -11,27 +9,28 @@ export const useStore = defineStore({
     httpRequestOnGoing: false,
     httpRequestAborted: false,
     httpRequestRetryCount: 0,
-    appVersion: "0.0.3",
-    isDark: false,
-    preferences: {
-      isDark: false,
-    },
+    appVersion: "0.0.7",
+    isDark: false
   }),
   actions: {
     async toggleTheme() {
       this.isDark = !this.isDark;
-      document.body.classList.toggle("dark", this.isDark);
-      await this.savePreferences({ isDark: this.isDark });
+      await setTheme(this.isDark);
+      await this.savePreferences(this.isDark);
     },
     async fetchPreferences() {
-      const result = await Preferences.get({ key: "user" });
-      this.preferences = JSON.parse(String(result.value));
+      const result = await Preferences.get({ key: "isDark" });
+      this.isDark = JSON.parse(String(result.value)) || false;
     },
-    async savePreferences(preferences: IPreferences) {
+    async savePreferences(isDark: boolean) {
       await Preferences.set({
-        key: "user",
-        value: JSON.stringify(preferences),
+        key: "isDark",
+        value: JSON.stringify(isDark),
       });
-    }
+    },
+    async loadApp() {
+      await this.fetchPreferences();
+      await setTheme(this.isDark);
+    },
   },
 });
