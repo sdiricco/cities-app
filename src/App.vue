@@ -12,6 +12,7 @@ const store = useStore();
 
 onMounted(async () => {
   store.schedule();
+  await store.getPosition();
   await store.loadApp();
   store.$subscribe(async(mutations, state)=> {
     await store.savePreferences(state.preferences)

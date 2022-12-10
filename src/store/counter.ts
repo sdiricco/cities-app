@@ -3,6 +3,8 @@ import { Preferences } from "@capacitor/preferences";
 import { setTheme } from "../theme/utility";
 import { LocalNotifications } from "@capacitor/local-notifications";
 
+import { Geolocation } from "@capacitor/geolocation";
+
 export const useStore = defineStore({
   id: "store",
   state: () => ({
@@ -59,15 +61,15 @@ export const useStore = defineStore({
       const randomId = () => Math.floor(Math.random() * 10000) + 1;
 
       const notifications = [];
-      for (let i = 1; i <10; i++) {
-        notifications.push(          {
+      for (let i = 1; i < 10; i++) {
+        notifications.push({
           title: "Test Title",
           body: `Test body ${i}`,
           id: randomId(),
           schedule: {
-            at: new Date(Date.now() + 5000*i), // in a minute
-          }
-        })
+            at: new Date(Date.now() + 5000 * i), // in a minute
+          },
+        });
       }
 
       LocalNotifications.schedule({
@@ -76,6 +78,10 @@ export const useStore = defineStore({
       LocalNotifications.addListener("localNotificationReceived", () => {
         console.log("RECEIVED!!!");
       });
+    },
+    async getPosition() {
+      const coordinates = await Geolocation.getCurrentPosition();
+      console.log("Current position:", JSON.stringify(coordinates));
     },
   },
 });
