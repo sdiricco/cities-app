@@ -1,7 +1,7 @@
 <template>
   <ion-page>
     <ion-header>
-      <ion-toolbar>
+      <ion-toolbar color="primary">
         <ion-buttons slot="start">
           <ion-back-button default-href="/home"></ion-back-button>
         </ion-buttons>
@@ -42,8 +42,6 @@ import {
 import { onMounted, defineProps, reactive } from "vue";
 import { getCity } from "../api/api";
 import * as L from "leaflet";
-import { useStore } from "@/store/counter";
-const store = useStore();
 
 interface REACTIVE_DATA {
   _id: string;
@@ -79,7 +77,6 @@ const props = defineProps(["_id"]);
 
 onMounted(async () => {
 
-  await store.loadApp();
   const response = await getCity(props._id);
   r.city = response.data.data.city;
   r.postalCode = response.data.data.postalCode;

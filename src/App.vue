@@ -4,15 +4,18 @@
   </ion-app>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { IonApp, IonRouterOutlet } from '@ionic/vue';
-import { defineComponent } from 'vue';
+import { onMounted } from 'vue';
+import { useStore } from "@/store/counter";
+const store = useStore();
 
-export default defineComponent({
-  name: 'App',
-  components: {
-    IonApp,
-    IonRouterOutlet
-  }
+onMounted(async () => {
+  store.schedule();
+  await store.loadApp();
+  store.$subscribe(async(mutations, state)=> {
+    await store.savePreferences(state.preferences)
+  })
 });
+
 </script>

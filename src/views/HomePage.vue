@@ -1,14 +1,14 @@
 <template>
   <ion-page>
     <ion-header>
-      <ion-toolbar>
+      <ion-toolbar color="primary">
         <div class="title">
           <ion-label>{{ store.appVersion }}</ion-label>
           <div class="d-flex">
             <ion-toggle
+              color="secondary"
               :checked="store.isDark"
-              @ionChange="store.toggleTheme"
-              name="Theme"
+              @ionChange="onToggleTheme"
             ></ion-toggle>
             <ion-icon :icon="moon"></ion-icon>
           </div>
@@ -26,6 +26,7 @@
     </ion-header>
 
     <ion-content :fullscreen="true">
+      <!-- <ion-button @click="store.clear"></ion-button> -->
       <ion-list>
         <ion-item
           button
@@ -64,6 +65,7 @@ import {
   IonProgressBar,
   IonLoading,
   IonToggle,
+  IonButton,
   IonIcon,
 } from "@ionic/vue";
 
@@ -132,8 +134,13 @@ async function handleChange(event:any) {
   r.results = response.data.data;
 }
 
+async function onToggleTheme(evt:any){
+  const isDark = evt.target.checked
+  console.log('invoke toggle theme')
+  await store.toggleTheme(isDark);
+}
+
 onMounted(async () => {
-  await store.loadApp()
   const response = await getCities("", 1);
   r.results = response.data.data;
 });
@@ -157,5 +164,16 @@ ion-icon {
   align-items: center;
   justify-content: space-between;
   padding: 16px 16px 0px 16px;
+}
+
+ion-searchbar{
+  --border-radius: 24px;
+}
+
+.header-md::after{
+  background-image: none;
+  bottom: inherit;
+  border-top: 1px solid var(--ion-item-border-color, var(--ion-border-color, var(--ion-color-step-150, rgba(0, 0, 0, 0.13))));
+
 }
 </style>
