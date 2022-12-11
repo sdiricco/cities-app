@@ -25,7 +25,7 @@ async function setDarkTheme(){
 
 async function setLightTheme(){
   try {
-    await StatusBar.setStyle({ style: Style.Dark });
+    await StatusBar.setStyle({ style: Style.Light });
   } catch (e) {
     console.log("Error during setting status bar color");
   }
