@@ -2,37 +2,27 @@
   <ion-page>
     <ion-header>
       <ion-toolbar color="primary">
-        <div class="title">
-          <ion-label>{{ store.appVersion }}</ion-label>
-          <div class="d-flex">
-            <ion-toggle
-              color="secondary"
-              :checked="store.isDark"
-              @ionChange="onToggleTheme"
-            ></ion-toggle>
-            <ion-icon :icon="moon"></ion-icon>
-          </div>
+        <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <div class="ion-padding-vertical">
+          <ion-searchbar
+            placeholder="Prova con ''Firenze''"
+            :debounce="200"
+            @ionChange="handleChange($event)"
+          ></ion-searchbar>
         </div>
-        <ion-searchbar
-          :debounce="200"
-          :style="{ padding: '16px' }"
-          @ionChange="handleChange($event)"
-        ></ion-searchbar>
       </ion-toolbar>
-      <ion-progress-bar
-        type="indeterminate"
-        v-if="false"
-      ></ion-progress-bar>
+      <ion-progress-bar type="indeterminate" v-if="false"></ion-progress-bar>
     </ion-header>
 
     <ion-content :fullscreen="true">
-      <!-- <ion-button @click="store.clear"></ion-button> -->
-      <ion-list>
+      <ion-list v-if="r.results.length && r.city !== ''">
         <ion-item
           button
           :detail="true"
-          v-for="(result, index) in r.results"
-          :key="index"
+          v-for="(result) in r.results"
+          :key="result._id"
           @click="handleClick(result._id)"
         >
           <ion-label>
@@ -41,11 +31,21 @@
           </ion-label>
         </ion-item>
       </ion-list>
+      <div v-else class="ion-padding">
+        <div v-if="r.city && r.city !== ''">
+          <h3>Nessun risultato</h3>
+          <p>Prova con una nuova ricerca</p>
+        </div>
+        <div v-else>
+          <h3>Ricerca una città</h3>
+          <p>Prova con ''Firenze'' o ''Bologna''</p>
+
+        </div>
+      </div>
 
       <ion-loading
         :is-open="store.httpRequestRetryCount > 0"
         :message="retryMessage"
-        :key="key"
       >
       </ion-loading>
     </ion-content>
@@ -64,17 +64,14 @@ import {
   IonList,
   IonProgressBar,
   IonLoading,
-  IonToggle,
-  IonButton,
-  IonIcon,
+  IonButtons,
+  IonMenuButton,
 } from "@ionic/vue";
 
-import { moon } from "ionicons/icons";
-import { reactive, onMounted, computed } from "vue";
+import { reactive, computed } from "vue";
 import { getCities } from "../api/api";
 import { useRouter } from "vue-router";
-import { useStore } from "@/store/counter";
-import { v4 as uuidv4 } from "uuid";
+import { useStore } from "@/store/main";
 const store = useStore();
 
 /*********************************************************/
@@ -96,6 +93,7 @@ interface REACTIVE_DATA {
   progress: boolean;
   debouncing: boolean;
   timer: any;
+  city: string;
 }
 /*********************************************************/
 /* REACTIVE DATA */
@@ -106,6 +104,7 @@ let r = reactive<REACTIVE_DATA>({
   progress: false,
   debouncing: false,
   timer: null,
+  city: ''
 });
 
 const router = useRouter();
@@ -120,60 +119,34 @@ async function handleClick(_id: any) {
 
 const retryMessage = computed(() => {
   console.log(store.httpRequestRetryCount);
-  return `Sto cercando di connettermi al server ma non risonde. Riprovo.. ${store.httpRequestRetryCount}/5`;
+  return `Sto cercando di connettermi al server ma non risonde. Riprovo..`;
 });
 
-const key = computed(() => {
-  return uuidv4() + store.httpRequestRetryCount;
-});
-
-async function handleChange(event:any) {
+async function handleChange(event: any) {
   console.log(event.target.value);
-  const v = String(event.target.value);
-  const response = await getCities(v, 1);
-  r.results = response.data.data;
+  const v = String(event.target.value).trim();
+  if (v && v !== "") {
+    const response = await getCities(v, 1);
+    r.results = response.data.data;
+  }
+  r.city = v;
 }
 
-async function onToggleTheme(evt:any){
-  const isDark = evt.target.checked
-  console.log('invoke toggle theme')
-  await store.toggleTheme(isDark);
-}
 
-onMounted(async () => {
-  const response = await getCities("", 1);
-  r.results = response.data.data;
-});
 </script>
 
 <style scoped>
-
-.mt32{
-  margin-top: 32px;
-}
-.d-flex {
-  display: flex;
-  align-items: center;
-}
 ion-icon {
   font-size: 24px;
 }
 
-.title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 16px 0px 16px;
+ion-buttons{
+  margin: auto
 }
 
-ion-searchbar{
+ion-searchbar {
   --border-radius: 24px;
-}
-
-.header-md::after{
-  background-image: none;
-  bottom: inherit;
-  border-top: 1px solid var(--ion-item-border-color, var(--ion-border-color, var(--ion-color-step-150, rgba(0, 0, 0, 0.13))));
-
+  padding-bottom: 0px;
+  padding-top: 0px;
 }
 </style>

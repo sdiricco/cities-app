@@ -6,23 +6,10 @@
           <ion-back-button default-href="/home"></ion-back-button>
         </ion-buttons>
       </ion-toolbar>
-      <ion-card v-if="!r.progress">
-        <ion-card-header>
-          <ion-card-title>{{ `${r.city} ${r.provinceCode}` }}</ion-card-title>
-          <ion-card-subtitle>
-            {{ `${r.postalCode}, ${r.region}` }}
-          </ion-card-subtitle>
-        </ion-card-header>
-
-        <ion-card-content>
-          <h2>{{ `Latitude: ${r.latitude}` }}</h2>
-          <h2>{{ `Longitude: ${r.longitude}` }}</h2>
-        </ion-card-content>
-      </ion-card>
+      <skeleton-card v-if="store.httpRequestOnGoing"> </skeleton-card>
+      <city-detail-card v-else :r="r"></city-detail-card>
     </ion-header>
-
     <ion-card id="map"></ion-card>
-
   </ion-page>
 </template>
 
@@ -31,17 +18,17 @@ import {
   IonHeader,
   IonPage,
   IonToolbar,
-  IonCardContent,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardSubtitle,
   IonButtons,
   IonBackButton,
   IonCard,
 } from "@ionic/vue";
-import { onMounted, defineProps, reactive } from "vue";
+import { onMounted, defineProps, reactive, withDefaults } from "vue";
+import SkeletonCard from "@/components/SkeletonCard.vue";
+import CityDetailCard from "@/components/CityDetailCard.vue";
 import { getCity } from "../api/api";
 import * as L from "leaflet";
+import { useStore } from "@/store/main";
+const store = useStore();
 
 interface REACTIVE_DATA {
   _id: string;
@@ -73,10 +60,16 @@ let r = reactive<REACTIVE_DATA>({
   progress: false,
 });
 
-const props = defineProps(["_id"]);
+const props = withDefaults(
+  defineProps<{
+    _id: string;
+  }>(),
+  {
+    _id: "",
+  }
+);
 
 onMounted(async () => {
-
   const response = await getCity(props._id);
   r.city = response.data.data.city;
   r.postalCode = response.data.data.postalCode;
@@ -87,9 +80,7 @@ onMounted(async () => {
   r.longitude = response.data.data.longitude;
   r.regionCode = response.data.data.regionCode;
 
-
   var map = L.map("map").setView([Number(r.latitude), Number(r.longitude)], 13);
-  console.log(map);
 
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
@@ -100,17 +91,24 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-
-.mt32{
-  margin-top: 32px;
-}
-
 #map {
   height: 100%;
 }
 
-ion-card{
+.content-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+ion-card {
   margin: 0px 0px 0px 0px;
   border-radius: 0px;
+}
+
+.spinner-position {
+  display: flex;
+  margin: auto;
+  height: 100%;
 }
 </style>
