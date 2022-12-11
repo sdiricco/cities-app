@@ -6,7 +6,20 @@
           <ion-back-button default-href="/home"></ion-back-button>
         </ion-buttons>
       </ion-toolbar>
-      <ion-card v-if="!r.progress">
+      <ion-card v-if="store.httpRequestOnGoing">
+        <ion-card-header>
+          <ion-skeleton-text :animated="true" style="width: 120px"></ion-skeleton-text>
+          <ion-card-subtitle>
+            <ion-skeleton-text :animated="true" style="width: 90px"></ion-skeleton-text>
+          </ion-card-subtitle>
+        </ion-card-header>
+
+        <ion-card-content>
+          <ion-skeleton-text :animated="true" style="width: 80px"></ion-skeleton-text>
+          <ion-skeleton-text :animated="true" style="width: 80px"></ion-skeleton-text>
+        </ion-card-content>
+      </ion-card>
+      <ion-card v-else>
         <ion-card-header>
           <ion-card-title>{{ `${r.city} ${r.provinceCode}` }}</ion-card-title>
           <ion-card-subtitle>
@@ -20,7 +33,6 @@
         </ion-card-content>
       </ion-card>
     </ion-header>
-
     <ion-card id="map"></ion-card>
 
   </ion-page>
@@ -38,10 +50,14 @@ import {
   IonButtons,
   IonBackButton,
   IonCard,
+  IonSkeletonText,
 } from "@ionic/vue";
 import { onMounted, defineProps, reactive } from "vue";
 import { getCity } from "../api/api";
 import * as L from "leaflet";
+import { useStore } from "@/store/counter";
+const store = useStore();
+
 
 interface REACTIVE_DATA {
   _id: string;
@@ -89,7 +105,6 @@ onMounted(async () => {
 
 
   var map = L.map("map").setView([Number(r.latitude), Number(r.longitude)], 13);
-  console.log(map);
 
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
@@ -101,16 +116,24 @@ onMounted(async () => {
 
 <style scoped>
 
-.mt32{
-  margin-top: 32px;
-}
-
 #map {
   height: 100%;
+}
+
+.content-spinner{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 ion-card{
   margin: 0px 0px 0px 0px;
   border-radius: 0px;
+}
+
+.spinner-position{
+  display: flex;
+  margin: auto;
+  height: 100%;
 }
 </style>

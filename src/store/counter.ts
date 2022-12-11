@@ -1,9 +1,6 @@
 import { defineStore } from "pinia";
 import { Preferences } from "@capacitor/preferences";
 import { setTheme } from "../theme/utility";
-import { LocalNotifications } from "@capacitor/local-notifications";
-
-import { Geolocation } from "@capacitor/geolocation";
 
 export const useStore = defineStore({
   id: "store",
@@ -11,7 +8,7 @@ export const useStore = defineStore({
     httpRequestOnGoing: false,
     httpRequestAborted: false,
     httpRequestRetryCount: 0,
-    appVersion: "0.0.7",
+    appVersion: "1.0.0",
     preferences: {
       isDark: false,
     },
@@ -56,32 +53,6 @@ export const useStore = defineStore({
     },
     async clear() {
       await Preferences.clear();
-    },
-    async schedule() {
-      const randomId = () => Math.floor(Math.random() * 10000) + 1;
-
-      const notifications = [];
-      for (let i = 1; i < 10; i++) {
-        notifications.push({
-          title: "Test Title",
-          body: `Test body ${i}`,
-          id: randomId(),
-          schedule: {
-            at: new Date(Date.now() + 5000 * i), // in a minute
-          },
-        });
-      }
-
-      LocalNotifications.schedule({
-        notifications: notifications,
-      });
-      LocalNotifications.addListener("localNotificationReceived", () => {
-        console.log("RECEIVED!!!");
-      });
-    },
-    async getPosition() {
-      const coordinates = await Geolocation.getCurrentPosition();
-      console.log("Current position:", JSON.stringify(coordinates));
-    },
+    }
   },
 });
