@@ -1,11 +1,11 @@
 <template>
   <ion-page>
     <ion-header>
-      <ion-toolbar color="primary">
-        <ion-buttons slot="start">
+      <ion-toolbar color="primary" class="pt64">
+        <ion-buttons slot="start" class="pb16">
           <ion-menu-button></ion-menu-button>
         </ion-buttons>
-        <div class="ion-padding-vertical">
+        <div class="pb16">
           <ion-searchbar
             placeholder="Prova con ''Firenze''"
             :debounce="200"
@@ -71,7 +71,7 @@ import {
 import { reactive, computed } from "vue";
 import { getCities } from "../api/api";
 import { useRouter } from "vue-router";
-import { useStore } from "@/store/counter";
+import { useStore } from "@/store/main";
 const store = useStore();
 
 /*********************************************************/
@@ -148,5 +148,13 @@ ion-searchbar {
   --border-radius: 24px;
   padding-bottom: 0px;
   padding-top: 0px;
+}
+
+.pt64{
+  padding-top: 64px;
+}
+
+.pb16{
+  padding-bottom: 16px;
 }
 </style>
