@@ -1,8 +1,8 @@
 <template>
   <ion-header>
-    <ion-toolbar class="ion-padding-vertical">
-      <h3 class="ion-padding">City APK</h3>
-      <div class="ion-padding-horizontal">v: {{ store.appVersion }}</div>
+    <ion-toolbar class="pt64 pb16">
+      <h3 class="ion-padding-horizontal">City APK</h3>
+      <div class="ion-padding-horizontal pb16">v: {{ store.appVersion }}</div>
     </ion-toolbar>
   </ion-header>
   <ion-content>
@@ -40,3 +40,13 @@ async function onToggleTheme(evt: any) {
 }
 
 </script>
+
+<style scoped>
+.pt64{
+  padding-top: 64px;
+}
+
+.pb16{
+  padding-bottom: 16px;
+}
+</style>

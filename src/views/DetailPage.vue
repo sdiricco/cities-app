@@ -1,7 +1,7 @@
 <template>
   <ion-page>
     <ion-header>
-      <ion-toolbar color="primary">
+      <ion-toolbar color="primary" class="pt64">
         <ion-buttons slot="start">
           <ion-back-button default-href="/home"></ion-back-button>
         </ion-buttons>
@@ -110,5 +110,9 @@ ion-card {
   display: flex;
   margin: auto;
   height: 100%;
+}
+
+.pt64{
+  padding-top: 64px;
 }
 </style>

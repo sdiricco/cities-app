@@ -1,6 +1,11 @@
 import { StatusBar, Style } from "@capacitor/status-bar";
 
 export async function setTheme(isDark: boolean) {
+  try {
+    await StatusBar.setOverlaysWebView({overlay: true})
+  } catch (e) {
+    console.log("Error during setting status overlay")
+  }
   if (isDark) {
     setDarkTheme();
   }else{
@@ -10,7 +15,6 @@ export async function setTheme(isDark: boolean) {
 
 async function setDarkTheme(){
   try {
-    await StatusBar.setBackgroundColor({ color: '#2a9d8f' });
     await StatusBar.setStyle({ style: Style.Dark });
   } catch (e) {
     console.log("Error during setting status bar color");
@@ -21,7 +25,6 @@ async function setDarkTheme(){
 
 async function setLightTheme(){
   try {
-    await StatusBar.setBackgroundColor({ color: '#2a9d8f' });
     await StatusBar.setStyle({ style: Style.Dark });
   } catch (e) {
     console.log("Error during setting status bar color");
