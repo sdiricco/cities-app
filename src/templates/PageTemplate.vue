@@ -96,7 +96,7 @@
   import { reactive, computed } from "vue";
   import { getCities } from "../api/api";
   import { useRouter } from "vue-router";
-  import { useStore } from "@/store/counter";
+  import { useStore } from "@/store/main";
   const store = useStore();
   
   /*********************************************************/

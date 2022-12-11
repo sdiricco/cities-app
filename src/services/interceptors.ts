@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 
 import axiosRetry from "axios-retry";
-import { useStore } from "@/store/counter";
+import { useStore } from "@/store/main";
 
 
 axiosRetry(axios, {

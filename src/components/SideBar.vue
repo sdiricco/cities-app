@@ -30,7 +30,7 @@ import {
   IonItem,
 } from "@ionic/vue";
 import { moon } from "ionicons/icons";
-import { useStore } from "@/store/counter";
+import { useStore } from "@/store/main";
 
 const store = useStore();
 
