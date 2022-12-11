@@ -1,25 +1,5 @@
 <template>
-  <ion-menu content-id="main-content">
-    <ion-header>
-      <ion-toolbar class="ion-padding-vertical">
-        <h3 class="ion-padding">City APK</h3>
-        <div class="ion-padding-horizontal">v: {{ store.appVersion }}</div>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content>
-      <ion-item lines="inset">
-        <ion-icon slot="start" :icon="moon"></ion-icon>
-        <ion-label>Dark mode</ion-label>
-        <ion-toggle
-          slot="end"
-          @ion-change="onToggleTheme"
-          :checked="store.isDark"
-        >
-        </ion-toggle>
-      </ion-item>
-    </ion-content>
-  </ion-menu>
-  <ion-page id="main-content">
+  <ion-page>
     <ion-header>
       <ion-toolbar color="primary">
         <ion-buttons slot="start">
@@ -37,7 +17,6 @@
     </ion-header>
 
     <ion-content :fullscreen="true">
-      <!-- <ion-button @click="store.clear"></ion-button> -->
       <ion-list v-if="r.results.length && r.city !== ''">
         <ion-item
           button
@@ -59,7 +38,7 @@
         </div>
         <div v-else>
           <h3>Ricerca una città</h3>
-          <p>Prova con 'Firenze' o 'Bologna'</p>
+          <p>Prova con ''Firenze'' o ''Bologna''</p>
 
         </div>
       </div>
@@ -85,14 +64,10 @@ import {
   IonList,
   IonProgressBar,
   IonLoading,
-  IonMenu,
   IonButtons,
   IonMenuButton,
-  IonToggle,
-  IonIcon,
 } from "@ionic/vue";
 
-import { moon } from "ionicons/icons";
 import { reactive, computed } from "vue";
 import { getCities } from "../api/api";
 import { useRouter } from "vue-router";
@@ -149,7 +124,7 @@ const retryMessage = computed(() => {
 
 async function handleChange(event: any) {
   console.log(event.target.value);
-  const v = String(event.target.value);
+  const v = String(event.target.value).trim();
   if (v && v !== "") {
     const response = await getCities(v, 1);
     r.results = response.data.data;
@@ -157,10 +132,7 @@ async function handleChange(event: any) {
   r.city = v;
 }
 
-async function onToggleTheme(evt: any) {
-  const isDark = evt.target.checked;
-  await store.toggleTheme(isDark);
-}
+
 </script>
 
 <style scoped>
