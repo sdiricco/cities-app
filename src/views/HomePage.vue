@@ -5,7 +5,7 @@
         <ion-buttons slot="start" class="pb16">
           <ion-menu-button></ion-menu-button>
         </ion-buttons>
-        <div class="pb16">
+        <div class="pb16 pr16">
           <ion-searchbar
             placeholder="Prova con ''Firenze''"
             :debounce="200"
@@ -156,5 +156,9 @@ ion-searchbar {
 
 .pb16{
   padding-bottom: 16px;
+}
+
+.pr16{
+  padding-right: 16px;
 }
 </style>
