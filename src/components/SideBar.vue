@@ -1,6 +1,6 @@
 <template>
-  <ion-header>
-    <ion-toolbar class="pt64 pb16">
+  <ion-header >
+    <ion-toolbar class="pt64 pb16" color="primary">
       <h3 class="ion-padding-horizontal">City APK</h3>
       <div class="ion-padding-horizontal pb16">v: {{ store.appVersion }}</div>
     </ion-toolbar>
