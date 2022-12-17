@@ -3,7 +3,7 @@
     <ion-item
       button
       :detail="true"
-      v-for="result in props.results"
+      v-for="result in store.cities"
       :key="result._id"
       @click="handleClick(result._id)"
     >
@@ -17,31 +17,12 @@
 
 <script lang="ts" setup>
 import { IonItem, IonLabel, IonList } from "@ionic/vue";
-import { defineProps, withDefaults } from "vue";
-
+import { useStore } from "@/store/main";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
+const store = useStore();
 
-interface CITY {
-  _id: string;
-  city: string;
-  postalCode: string;
-  region: string;
-  countryCode: string;
-  provinceCode: string;
-  latitude: string;
-  longitude: string;
-}
-
-const props = withDefaults(
-  defineProps<{
-    results: Array<CITY>;
-  }>(),
-  {
-    results: () => [],
-  }
-);
 
 async function handleClick(_id: any) {
   router.push(`/home/${_id}`);

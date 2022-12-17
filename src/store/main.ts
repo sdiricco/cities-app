@@ -1,16 +1,43 @@
 import { defineStore } from "pinia";
 import { Preferences } from "@capacitor/preferences";
-import { setTheme } from "../theme/utility";
+import { setTheme } from "@/theme/utility";
+import * as api from "@/api/api"
 
 import { Network } from '@capacitor/network';
 
+interface ICity {
+  _id: string;
+  city: string;
+  postalCode: string;
+  region: string;
+  countryCode: string;
+  provinceCode: string;
+  latitude: string;
+  longitude: string;
+}
+interface IState {
+  httpRequestOnGoing: boolean;
+  httpRequestAborted: boolean;
+  httpRequestRetryCount: number;
+  appVersion: string;
+  networkStatus: {
+    connected: boolean;
+    connectionType: string;
+  },
+  preferences: {
+    isDark: boolean;
+  },
+  cities: Array<ICity>;
+  city: ICity;
+  searchCity: string;
+}
 export const useStore = defineStore({
   id: "store",
-  state: () => ({
+  state: (): IState =>({
     httpRequestOnGoing: false,
     httpRequestAborted: false,
     httpRequestRetryCount: 0,
-    appVersion: "1.0.3",
+    appVersion: "1.0.4",
     networkStatus: {
       connected: true,
       connectionType: ''
@@ -18,6 +45,18 @@ export const useStore = defineStore({
     preferences: {
       isDark: false,
     },
+    cities: [],
+    city: {
+      _id: '',
+      city: '',
+      postalCode: '',
+      region: '',
+      countryCode: '',
+      provinceCode: '',
+      latitude: '',
+      longitude: ''
+    },
+    searchCity: ''
   }),
   getters: {
     isDark: (state: any) => state.preferences.isDark,
@@ -53,6 +92,20 @@ export const useStore = defineStore({
         console.log("\tError saving preferences");
       }
     },
+    async fetchCities(v=''){
+      try {
+        this.searchCity = v;
+        if (this.searchCity === '') {
+          this.cities = []
+          return;
+        }
+        const response = await api.getCities(this.searchCity, 1);
+        this.cities = response.data.data
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
     listenForNetworkChanges(){
       Network.addListener('networkStatusChange', status => {
         this.networkStatus = status;
