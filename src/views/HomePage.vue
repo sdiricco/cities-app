@@ -12,36 +12,19 @@
             @ionChange="handleChange($event)"
           ></ion-searchbar>
         </div>
+        <ion-progress-bar
+          type="indeterminate"
+          v-if="store.httpRequestOnGoing"
+          color="secondary"
+        ></ion-progress-bar>
       </ion-toolbar>
-      <ion-progress-bar type="indeterminate" v-if="false"></ion-progress-bar>
     </ion-header>
 
     <ion-content :fullscreen="true">
-      <ion-list v-if="r.results.length && r.city !== ''">
-        <ion-item
-          button
-          :detail="true"
-          v-for="(result) in r.results"
-          :key="result._id"
-          @click="handleClick(result._id)"
-        >
-          <ion-label>
-            <h3>{{ `${result.city} ${result.provinceCode}` }}</h3>
-            <p>{{ `${result.postalCode}, ${result.region}` }}</p>
-          </ion-label>
-        </ion-item>
-      </ion-list>
-      <div v-else class="ion-padding">
-        <div v-if="r.city && r.city !== ''">
-          <h3>Nessun risultato</h3>
-          <p>Prova con una nuova ricerca</p>
-        </div>
-        <div v-else>
-          <h3>Ricerca una città</h3>
-          <p>Prova con ''Firenze'' o ''Bologna''</p>
-
-        </div>
-      </div>
+      <NoConnection v-if="noConnection" />
+      <ResearchHint v-else-if="researchHint" />
+      <ResearchResults v-else-if="areResults" :results="r.results" />
+      <NoResults v-else-if="noResults" />
 
       <ion-loading
         :is-open="store.httpRequestRetryCount > 0"
@@ -58,19 +41,20 @@ import {
   IonHeader,
   IonPage,
   IonToolbar,
-  IonItem,
-  IonLabel,
   IonSearchbar,
-  IonList,
   IonProgressBar,
   IonLoading,
   IonButtons,
   IonMenuButton,
 } from "@ionic/vue";
 
+import ResearchResults from "@/components/HomePage/ResearchResults.vue";
+import NoConnection from "@/components/HomePage/NoConnection.vue";
+import NoResults from "@/components/HomePage/NoResults.vue";
+import ResearchHint from "@/components/HomePage/ResearchHint.vue";
+
 import { reactive, computed } from "vue";
 import { getCities } from "../api/api";
-import { useRouter } from "vue-router";
 import { useStore } from "@/store/main";
 const store = useStore();
 
@@ -104,14 +88,8 @@ let r = reactive<REACTIVE_DATA>({
   progress: false,
   debouncing: false,
   timer: null,
-  city: ''
+  city: "",
 });
-
-const router = useRouter();
-
-async function handleClick(_id: any) {
-  router.push(`/home/${_id}`);
-}
 
 /*********************************************************/
 /* COMPUTED */
@@ -122,17 +100,35 @@ const retryMessage = computed(() => {
   return `Sto cercando di connettermi al server ma non risonde. Riprovo..`;
 });
 
+const noConnection = computed(() => {
+  return !store.networkStatus.connected;
+});
+
+const researchHint = computed(() => {
+  return r.city === "";
+});
+
+const noResults = computed(() => {
+  return !r.results.length && r.city !== "";
+});
+
+const areResults = computed(() => {
+  return r.results.length > 0;
+});
+
+/*********************************************************/
+/* METHODS */
+/*********************************************************/
+
 async function handleChange(event: any) {
-  console.log(event.target.value);
-  const v = String(event.target.value).trim();
-  if (v && v !== "") {
-    const response = await getCities(v, 1);
-    r.results = response.data.data;
+  if (noConnection.value) {
+    return;
   }
+  const v = String(event.target.value).trim();
+  const response = await getCities(v, 1);
+  r.results = response.data.data;
   r.city = v;
 }
-
-
 </script>
 
 <style scoped>
@@ -140,8 +136,8 @@ ion-icon {
   font-size: 24px;
 }
 
-ion-buttons{
-  margin: auto
+ion-buttons {
+  margin: auto;
 }
 
 ion-searchbar {
@@ -150,15 +146,15 @@ ion-searchbar {
   padding-top: 0px;
 }
 
-.pt64{
+.pt64 {
   padding-top: 64px;
 }
 
-.pb16{
+.pb16 {
   padding-bottom: 16px;
 }
 
-.pr16{
+.pr16 {
   padding-right: 16px;
 }
 </style>
