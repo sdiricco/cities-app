@@ -24,3 +24,7 @@ onMounted(async () => {
   });
 });
 </script>
+
+<style>
+@import './main.css'
+</style>

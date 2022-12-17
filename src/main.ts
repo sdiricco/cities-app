@@ -40,10 +40,10 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 /* import specific icons */
-import { faUserSecret, faSatelliteDish, faMoon, faSun } from '@fortawesome/free-solid-svg-icons'
+import { faUserSecret, faSatelliteDish, faMoon, faSun, faWifi, faMagnifyingGlass, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
 
 /* add icons to the library */
-library.add(faUserSecret, faSatelliteDish, faMoon, faSun)
+library.add(faUserSecret, faSatelliteDish, faMoon, faSun, faWifi, faMagnifyingGlass, faCircleXmark)
 
 interceptors.activate();
 

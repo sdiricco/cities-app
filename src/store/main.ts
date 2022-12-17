@@ -2,13 +2,19 @@ import { defineStore } from "pinia";
 import { Preferences } from "@capacitor/preferences";
 import { setTheme } from "../theme/utility";
 
+import { Network } from '@capacitor/network';
+
 export const useStore = defineStore({
   id: "store",
   state: () => ({
     httpRequestOnGoing: false,
     httpRequestAborted: false,
     httpRequestRetryCount: 0,
-    appVersion: "1.0.2",
+    appVersion: "1.0.3",
+    networkStatus: {
+      connected: true,
+      connectionType: ''
+    },
     preferences: {
       isDark: false,
     },
@@ -47,9 +53,26 @@ export const useStore = defineStore({
         console.log("\tError saving preferences");
       }
     },
+    listenForNetworkChanges(){
+      Network.addListener('networkStatusChange', status => {
+        this.networkStatus = status;
+        console.log('Network status changed', status.connected);
+      });
+    },
+    async getNetworkStatus(){
+      try {
+        const status = await Network.getStatus()
+        this.networkStatus = status;
+        console.log('Network status:', status.connected);
+      } catch (e) {
+        console.log('Error getting network status')
+      }
+    },
     async loadApp() {
       await this.fetchPreferences();
       await setTheme(this.isDark);
+      this.listenForNetworkChanges();
+      await this.getNetworkStatus();
     },
     async clear() {
       await Preferences.clear();
