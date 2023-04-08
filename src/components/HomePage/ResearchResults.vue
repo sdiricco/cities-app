@@ -17,11 +17,11 @@
 
 <script lang="ts" setup>
 import { IonItem, IonLabel, IonList } from "@ionic/vue";
-import { useStore } from "@/store/main";
+import { useMainStore } from "@/store/main";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
-const store = useStore();
+const store = useMainStore();
 
 
 async function handleClick(_id: any) {

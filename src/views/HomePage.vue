@@ -39,12 +39,12 @@ import ResearchHint from "@/components/HomePage/ResearchHint.vue";
 import SearchToolbar from "@/components/HomePage/SearchToolbar.vue";
 
 /* STORE */
-import { useStore } from "@/store/main";
+import { useMainStore } from "@/store/main";
 
 /*********************************************************/
 /* GLOBALS */
 /*********************************************************/
-const store = useStore();
+const store = useMainStore();
 
 /*********************************************************/
 /* LOCAL COMPUTED */

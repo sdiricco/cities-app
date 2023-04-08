@@ -30,9 +30,9 @@ import {
   IonItem,
 } from "@ionic/vue";
 import { moon } from "ionicons/icons";
-import { useStore } from "@/store/main";
+import { useMainStore } from "@/store/main";
 
-const store = useStore();
+const store = useMainStore();
 
 async function onToggleTheme(evt: any) {
   const isDark = evt.target.checked;

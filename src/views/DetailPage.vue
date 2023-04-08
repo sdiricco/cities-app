@@ -27,8 +27,8 @@ import SkeletonCard from "@/components/SkeletonCard.vue";
 import CityDetailCard from "@/components/CityDetailCard.vue";
 import { getCity } from "../api/api";
 import * as L from "leaflet";
-import { useStore } from "@/store/main";
-const store = useStore();
+import { useMainStore } from "@/store/main";
+const store = useMainStore();
 
 interface REACTIVE_DATA {
   _id: string;

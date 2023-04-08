@@ -31,7 +31,7 @@ interface IState {
   city: ICity;
   searchCity: string;
 }
-export const useStore = defineStore({
+export const useMainStore = defineStore({
   id: "store",
   state: (): IState =>({
     httpRequestOnGoing: false,

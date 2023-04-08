@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 
 import axiosRetry from "axios-retry";
-import { useStore } from "@/store/main";
+import { useMainStore } from "@/store/main";
 
 
 axiosRetry(axios, {
@@ -11,7 +11,7 @@ axiosRetry(axios, {
 });
 
 function onRetry(retryCount: number) {
-  const store = useStore();
+  const store = useMainStore();
   store.httpRequestRetryCount = retryCount;
 }
 
@@ -27,7 +27,7 @@ export function activate() {
   // Add a request interceptor
   axios.interceptors.request.use(
     function (config) {
-      const store = useStore();
+      const store = useMainStore();
       store.httpRequestOnGoing = true;
 
       // Do something before request is sent
@@ -42,7 +42,7 @@ export function activate() {
   // Add a response interceptor
   axios.interceptors.response.use(
     function (response) {
-      const store = useStore();
+      const store = useMainStore();
       store.httpRequestOnGoing = false;
       store.httpRequestRetryCount = 0;
 
@@ -52,7 +52,7 @@ export function activate() {
     },
 
     function (error) {
-      const store = useStore();
+      const store = useMainStore();
       store.httpRequestOnGoing = false;
       store.httpRequestAborted = false;
       store.httpRequestRetryCount = 0;

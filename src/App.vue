@@ -13,10 +13,10 @@
 import { IonApp, IonRouterOutlet, IonPage, IonMenu } from "@ionic/vue";
 import  SiderBar from './components/SideBar.vue'
 import { onMounted } from "vue";
-import { useStore } from "@/store/main";
+import { useMainStore } from "@/store/main";
 
 
-const store = useStore();
+const store = useMainStore();
 onMounted(async () => {
   await store.loadApp();
   store.$subscribe(async (mutations, state) => {

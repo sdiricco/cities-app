@@ -29,8 +29,8 @@ import {
 
 
 import { computed } from "vue";
-import { useStore } from "@/store/main";
-const store = useStore();
+import { useMainStore } from "@/store/main";
+const store = useMainStore();
 
 /*********************************************************/
 /* COMPUTED */
